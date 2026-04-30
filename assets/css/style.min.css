@@ -13365,3 +13365,68 @@ input[type="color"]:hover {
 .font-medium {
   font-weight: 500;
 }
+    /* 
+      ===================================
+      FIX: responsive image – full width on phone, proper scaling
+      previously width:70% made it small on mobile
+      now: width:100% on mobile, maintain aspect ratio, auto sizing
+    ===================================
+    */
+    .aspect-container img {
+      width: 100%;           /* full container width on all screens */
+      height: auto;          /* maintain natural aspect ratio */
+      max-width: 100%;       /* never overflow parent */
+      display: block;
+      object-fit: cover;     /* optional: clean fit, but keeps proportions */
+      border-radius: 18px;   /* subtle rounding for modern look (optional) */
+      transition: all 0.2s ease;
+    }
+
+    /* for desktop / large screens you can optionally limit width if needed */
+    /* but since original design wanted width:70% on desktop but full on phone – 
+       we make it fully responsive: on desktop 70% if you prefer, but mobile takes 100% 
+       to solve "phone screen pic is small" problem.
+    */
+    
+    /* DESKTOP & TABLET: you may keep original ratio style optionally, 
+       but the issue was phone = small. fix ensures phone gets 100%.
+       if you like original "70% width" on desktop, we'll add media query 
+    */
+    @media (min-width: 992px) {
+      .aspect-container img {
+        width: 70%;          /* keep original desktop style (70%) */
+        max-width: 70%;
+        margin: 0 auto;      /* center it */
+      }
+    }
+
+    /* for tablets (between 768px and 991px) let's use 85% for better visibility */
+    @media (min-width: 768px) and (max-width: 991px) {
+      .aspect-container img {
+        width: 85%;
+        max-width: 85%;
+        margin: 0 auto;
+      }
+    }
+
+    /* for phones (max-width: 767px) : THE FIX – image takes full width */
+    @media (max-width: 767px) {
+      .aspect-container img {
+        width: 100% !important;   /* forces full width on mobile */
+        max-width: 100% !important;
+        height: auto;
+        object-fit: contain;      /* or cover, but contain keeps full image visible */
+        border-radius: 16px;
+      }
+    }
+
+    /* extra safety: any device under 576px */
+    @media (max-width: 576px) {
+      .aspect-container img {
+        width: 100% !important;
+        display: block;
+      }
+      .col {
+        padding: 0 8px;
+      }
+    }
